@@ -9,11 +9,11 @@ import java.awt.*;
 
 public class VistatCrearDoctor extends JFrame {
     int contadorCodigo = 0;
-    VistatCrearDoctor(DefaultTableModel modeloTablaDoctores){
-        initComponents(modeloTablaDoctores);
+    VistatCrearDoctor(){
+        initComponents();
     }
 
-    public void initComponents(DefaultTableModel modeloTablaDoctores){
+    public void initComponents(){
         setTitle("Crear Doctor");
         setSize(1200, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -51,7 +51,7 @@ public class VistatCrearDoctor extends JFrame {
 
         String[] rellenoCbx = {"Masculino", "Femenino"};
         JComboBox<String> cbxGenero = new JComboBox<>(rellenoCbx);
-        cbxGenero.setBounds(140,130,80,25);
+        cbxGenero.setBounds(140,130,100,25);
         add(cbxGenero);
 
         JLabel lblTelefono = new JLabel("Teléfono:");
@@ -88,7 +88,6 @@ public class VistatCrearDoctor extends JFrame {
             String digitoContador = "00"+Integer.toString(contadorCodigo);
             Administrador.agregarDoctores(new Doctor(digitoContador,txtContrasena.getText(),txtNombres.getText(), txtApellidos.getText(),
                     txtEspecialidad.getText(),cbxGenero.getSelectedItem().toString(),txtTelefono.getText(),txtEdad.getText()));
-            modeloTablaDoctores.fireTableDataChanged();
         });
         JLabel fondo = new JLabel();
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/fondo1.jpg")));

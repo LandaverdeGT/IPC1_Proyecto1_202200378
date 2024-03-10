@@ -51,7 +51,6 @@ public class Doctor extends Usuario{
     public void setGenero(String genero) {
         this.genero = genero;
     }
-
     public String getTelefono() {
         return telefono;
     }
