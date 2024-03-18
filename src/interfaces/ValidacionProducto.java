@@ -1,16 +1,18 @@
 package interfaces;
 
 import clases.Doctor;
+import clases.Producto;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
+import java.util.jar.JarFile;
 
 import static clases.Administrador.doctores;
+import static clases.Administrador.productos;
 
-
-public class ValidacionDoctor extends JFrame {
-    ValidacionDoctor(){
+public class ValidacionProducto extends JFrame {
+    ValidacionProducto(){
         initComponents();
     }
 
@@ -26,7 +28,7 @@ public class ValidacionDoctor extends JFrame {
         lblIcono.setBounds(50,78,100,100);
         add(lblIcono);
 
-        JLabel lblMensaje = new JLabel("Ingrese el Código del Doctor que");
+        JLabel lblMensaje = new JLabel("Ingrese el Código del Producto que");
         lblMensaje.setFont(new Font("Tahoma",Font.BOLD,15));
         lblMensaje.setBounds(175,100,300,20);
         add(lblMensaje);
@@ -36,9 +38,9 @@ public class ValidacionDoctor extends JFrame {
         lblMensaje2.setBounds(175,135,300,20);
         add(lblMensaje2);
 
-        JTextField txtCodigoNuevoDoctor = new JTextField();
-        txtCodigoNuevoDoctor.setBounds(140,250,230,35);
-        add(txtCodigoNuevoDoctor);
+        JTextField txtCodigoNuevoProducto= new JTextField();
+        txtCodigoNuevoProducto.setBounds(140,250,230,35);
+        add(txtCodigoNuevoProducto);
 
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(Color.LIGHT_GRAY);
@@ -55,24 +57,24 @@ public class ValidacionDoctor extends JFrame {
         add(btnAceptar);
 
         btnAceptar.addActionListener(e -> {
-            String codigoBuscado = txtCodigoNuevoDoctor.getText();
-            boolean doctorEncontrado = false;
+            String codigoBuscado = txtCodigoNuevoProducto.getText();
+            boolean productoEncontrado = false;
             do {
-                for (Doctor doctor : doctores) {
-                    if (codigoBuscado.equals(doctor.getCodigo())) {
-                        VistaActualizarDoctor vistaActualizarDoctor = new VistaActualizarDoctor(codigoBuscado);
-                        vistaActualizarDoctor.setVisible(true);
-                        setLocationRelativeTo(null);
+                for (Producto producuto : productos) {
+                    if (codigoBuscado.equals(producuto.getCodigo())) {
+                        VistaActualizarProducto vistaActualizarProducto = new VistaActualizarProducto(codigoBuscado);
+                        vistaActualizarProducto.setVisible(true);
+                        vistaActualizarProducto.setLocationRelativeTo(null);
                         this.setVisible(false);
-                        doctorEncontrado = true;
+                        productoEncontrado = true;
                         break;
                     }
                 }
-                if (!doctorEncontrado){
-                    JOptionPane.showMessageDialog(this,"El Doctor No Existe");
+                if (!productoEncontrado){
+                    JOptionPane.showMessageDialog(this,"El Producto No Existe");
                     break;
                 }
-            }while (!doctorEncontrado);
+            }while (!productoEncontrado);
 
         });
 

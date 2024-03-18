@@ -11,6 +11,7 @@ public class Doctor extends Usuario{
     private String telefono;
     private String edad;
 
+    public static List<Cita> citas;
     public Doctor(String codigo, String contrasena, String nombres, String apellidos, String especialidad, String genero, String telefono, String edad) {
         super(codigo, contrasena);
         this.nombres = nombres;
@@ -19,6 +20,11 @@ public class Doctor extends Usuario{
         this.genero = genero;
         this.telefono = telefono;
         this.edad = edad;
+        citas = new ArrayList<>();
+    }
+
+    public static void agregarCita(Cita cita){
+        citas.add(cita);
     }
     public String getNombres() {
         return nombres;

@@ -1,22 +1,23 @@
 package interfaces;
 
-import clases.Doctor;
-import tableModels.TableModelsDoctores;
+import clases.Paciente;
+import clases.Producto;
+import tableModels.TableModelProductos;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-public class EliminarDoctorValidacion extends JFrame {
-    TableModelsDoctores tableModelsDoctores;
-    EliminarDoctorValidacion(List<Doctor> doctores,TableModelsDoctores tableModelsDoctores){
-        initComponents(doctores);
-        this.tableModelsDoctores = tableModelsDoctores;
-        }
+public class EliminarProductoValidacion extends JFrame{
+    TableModelProductos tableModelProductos;
+    EliminarProductoValidacion(List<Producto> productos, TableModelProductos tableModelProductos){
+        initComponents(productos);
+        this.tableModelProductos = tableModelProductos;
+    }
 
-    public void initComponents(List<Doctor> doctores){
-        setTitle("Eliminar Doctor");
+    public void initComponents(List<Producto> productos){
+        setTitle("Eliminar Producto");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -27,7 +28,7 @@ public class EliminarDoctorValidacion extends JFrame {
         lblIconoError.setBounds(50,78,100,100);
         add(lblIconoError);
 
-        JLabel lblMensaje = new JLabel("Ingrese el Código del Doctor");
+        JLabel lblMensaje = new JLabel("Ingrese el Código del Producto");
         lblMensaje.setFont(new Font("Tahoma",Font.BOLD,15));
         lblMensaje.setBounds(175,100,300,20);
         add(lblMensaje);
@@ -50,30 +51,30 @@ public class EliminarDoctorValidacion extends JFrame {
             this.setVisible(false);
         });
 
-        JButton btnAceptarEliminar = new JButton("Aceptar");
-        btnAceptarEliminar.setBackground(Color.LIGHT_GRAY);
-        btnAceptarEliminar.setBounds(280,310,100,25);
-        add(btnAceptarEliminar);
+        JButton btnAceptar = new JButton("Aceptar");
+        btnAceptar.setBackground(Color.LIGHT_GRAY);
+        btnAceptar.setBounds(280,310,100,25);
+        add(btnAceptar);
 
-        btnAceptarEliminar.addActionListener(e -> {
+        btnAceptar.addActionListener(e -> {
             String codigoEiminar = txtCodigoEliminar.getText();
-            boolean doctorEcontrado = false;
+            boolean productoEncontrado = false;
 
             do {
-                for (Doctor doctor : doctores) {
-                    if (codigoEiminar.equals(doctor.getCodigo())) {
-                        doctores.remove(doctor);
-                        JOptionPane.showMessageDialog(this, "El Doctor se ha Eliminado");
-                        doctorEcontrado = true;
-                        tableModelsDoctores.actualizarTabla();
+                for (Producto producto : productos) {
+                    if (codigoEiminar.equals(producto.getCodigo())) {
+                        productos.remove(producto);
+                        JOptionPane.showMessageDialog(this, "El Producto se ha Eliminado");
+                        productoEncontrado = true;
+                        tableModelProductos.actualizarTabla();
                         break;
                     }
                 }
-                if (!doctorEcontrado){
-                    JOptionPane.showMessageDialog(this,"El Doctor no Existe");
+                if (!productoEncontrado){
+                    JOptionPane.showMessageDialog(this,"El Producto no Existe");
                     break;
                 }
-            }while (!doctorEcontrado);
+            }while (!productoEncontrado);
 
         });
 

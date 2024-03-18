@@ -1,22 +1,21 @@
 package interfaces;
-
-import clases.Doctor;
-import tableModels.TableModelsDoctores;
+import clases.Paciente;
+import tableModels.TableModelPacientes;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-public class EliminarDoctorValidacion extends JFrame {
-    TableModelsDoctores tableModelsDoctores;
-    EliminarDoctorValidacion(List<Doctor> doctores,TableModelsDoctores tableModelsDoctores){
-        initComponents(doctores);
-        this.tableModelsDoctores = tableModelsDoctores;
-        }
+public class EliminarPacienteValidacion extends JFrame {
+    TableModelPacientes tableModelPacientes;
+    EliminarPacienteValidacion(List<Paciente> pacientes, TableModelPacientes tableModelPacientes){
+        initComponents(pacientes);
+        this.tableModelPacientes = tableModelPacientes;
+    }
 
-    public void initComponents(List<Doctor> doctores){
-        setTitle("Eliminar Doctor");
+    public void initComponents(List<Paciente> pacientes){
+        setTitle("Eliminar Paciente");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -27,7 +26,7 @@ public class EliminarDoctorValidacion extends JFrame {
         lblIconoError.setBounds(50,78,100,100);
         add(lblIconoError);
 
-        JLabel lblMensaje = new JLabel("Ingrese el Código del Doctor");
+        JLabel lblMensaje = new JLabel("Ingrese el Código del Paciente");
         lblMensaje.setFont(new Font("Tahoma",Font.BOLD,15));
         lblMensaje.setBounds(175,100,300,20);
         add(lblMensaje);
@@ -50,30 +49,30 @@ public class EliminarDoctorValidacion extends JFrame {
             this.setVisible(false);
         });
 
-        JButton btnAceptarEliminar = new JButton("Aceptar");
-        btnAceptarEliminar.setBackground(Color.LIGHT_GRAY);
-        btnAceptarEliminar.setBounds(280,310,100,25);
-        add(btnAceptarEliminar);
+        JButton btnAceptar = new JButton("Aceptar");
+        btnAceptar.setBackground(Color.LIGHT_GRAY);
+        btnAceptar.setBounds(280,310,100,25);
+        add(btnAceptar);
 
-        btnAceptarEliminar.addActionListener(e -> {
+        btnAceptar.addActionListener(e -> {
             String codigoEiminar = txtCodigoEliminar.getText();
-            boolean doctorEcontrado = false;
+            boolean pacienteEncontrado = false;
 
             do {
-                for (Doctor doctor : doctores) {
-                    if (codigoEiminar.equals(doctor.getCodigo())) {
-                        doctores.remove(doctor);
-                        JOptionPane.showMessageDialog(this, "El Doctor se ha Eliminado");
-                        doctorEcontrado = true;
-                        tableModelsDoctores.actualizarTabla();
+                for (Paciente paciente : pacientes) {
+                    if (codigoEiminar.equals(paciente.getCodigo())) {
+                        pacientes.remove(paciente);
+                        JOptionPane.showMessageDialog(this, "El Paciente se ha Eliminado");
+                        pacienteEncontrado = true;
+                        tableModelPacientes.actualizarTabla();
                         break;
                     }
                 }
-                if (!doctorEcontrado){
-                    JOptionPane.showMessageDialog(this,"El Doctor no Existe");
+                if (!pacienteEncontrado){
+                    JOptionPane.showMessageDialog(this,"El Paciente no Existe");
                     break;
                 }
-            }while (!doctorEcontrado);
+            }while (!pacienteEncontrado);
 
         });
 

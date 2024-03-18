@@ -1,16 +1,13 @@
 package interfaces;
 
-import clases.Doctor;
-
+import clases.Paciente;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
+import static clases.Administrador.pacientes;
 
-import static clases.Administrador.doctores;
-
-
-public class ValidacionDoctor extends JFrame {
-    ValidacionDoctor(){
+public class ValidacionPaciente extends JFrame {
+    ValidacionPaciente(){
         initComponents();
     }
 
@@ -26,7 +23,7 @@ public class ValidacionDoctor extends JFrame {
         lblIcono.setBounds(50,78,100,100);
         add(lblIcono);
 
-        JLabel lblMensaje = new JLabel("Ingrese el Código del Doctor que");
+        JLabel lblMensaje = new JLabel("Ingrese el Código del Paciente que");
         lblMensaje.setFont(new Font("Tahoma",Font.BOLD,15));
         lblMensaje.setBounds(175,100,300,20);
         add(lblMensaje);
@@ -36,9 +33,9 @@ public class ValidacionDoctor extends JFrame {
         lblMensaje2.setBounds(175,135,300,20);
         add(lblMensaje2);
 
-        JTextField txtCodigoNuevoDoctor = new JTextField();
-        txtCodigoNuevoDoctor.setBounds(140,250,230,35);
-        add(txtCodigoNuevoDoctor);
+        JTextField txtCodigoNuevoPaciente = new JTextField();
+        txtCodigoNuevoPaciente.setBounds(140,250,230,35);
+        add(txtCodigoNuevoPaciente);
 
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(Color.LIGHT_GRAY);
@@ -55,24 +52,24 @@ public class ValidacionDoctor extends JFrame {
         add(btnAceptar);
 
         btnAceptar.addActionListener(e -> {
-            String codigoBuscado = txtCodigoNuevoDoctor.getText();
-            boolean doctorEncontrado = false;
+            String codigoBuscado = txtCodigoNuevoPaciente.getText();
+            boolean pacienteEncontrado = false;
             do {
-                for (Doctor doctor : doctores) {
-                    if (codigoBuscado.equals(doctor.getCodigo())) {
-                        VistaActualizarDoctor vistaActualizarDoctor = new VistaActualizarDoctor(codigoBuscado);
-                        vistaActualizarDoctor.setVisible(true);
+                for (Paciente paciente : pacientes) {
+                    if (codigoBuscado.equals(paciente.getCodigo())) {
+                        VistaActualizarPaciente vistaActualizarPaciente = new VistaActualizarPaciente(codigoBuscado);
+                        vistaActualizarPaciente.setVisible(true);
                         setLocationRelativeTo(null);
                         this.setVisible(false);
-                        doctorEncontrado = true;
+                        pacienteEncontrado = true;
                         break;
                     }
                 }
-                if (!doctorEncontrado){
-                    JOptionPane.showMessageDialog(this,"El Doctor No Existe");
+                if (!pacienteEncontrado){
+                    JOptionPane.showMessageDialog(this,"El Paciente No Existe");
                     break;
                 }
-            }while (!doctorEncontrado);
+            }while (!pacienteEncontrado);
 
         });
 
