@@ -1,8 +1,9 @@
 package clases;
 
-import tableModels.TableModelsDoctores;
+import interfaces.VistaPaciente;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,12 @@ public class Administrador extends Usuario{
     public static void agregarProductos(Producto producto){
         productos.add(producto);
         JOptionPane.showMessageDialog(null,"El Producto se ha agregado");
+
+        for (Window window : JWindow.getWindows()){
+            if (window instanceof VistaPaciente){
+                ((VistaPaciente) window).actualizarFarmacia(producto);
+            }
+        }
     }
 
 

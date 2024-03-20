@@ -1,13 +1,14 @@
 package clases;
-
 public class Cita {
     String numeroCita;
     String citaAgendada;
+    String especialidad;
 
 
-    public Cita(String numeroCita, String citaAgendada) {
+    public Cita(String numeroCita, String citaAgendada, String especialidad) {
         this.numeroCita = numeroCita;
         this.citaAgendada = citaAgendada;
+        this.especialidad = especialidad;
     }
 
     public String getNumeroCita() {
@@ -17,4 +18,7 @@ public class Cita {
         return citaAgendada;
     }
 
+    public String getEspecialidad() {
+        return especialidad;
+    }
 }

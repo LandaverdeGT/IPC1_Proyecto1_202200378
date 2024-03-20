@@ -1,7 +1,6 @@
 package interfaces;
 
 import clases.Administrador;
-import clases.Doctor;
 import clases.Producto;
 import tableModels.TableModelProductos;
 

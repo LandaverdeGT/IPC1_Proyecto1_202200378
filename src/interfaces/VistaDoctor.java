@@ -11,20 +11,32 @@ import java.util.Objects;
 
 public class VistaDoctor extends JFrame {
     private JTabbedPane tabbedPane;
+    private Doctor doctorActual;
     int contador = 0;
-    VistaDoctor(){
-        initComponents();
+    VistaDoctor(Doctor doctor){
+        initComponents(doctor);
     }
 
-    public void initComponents(){
+    public void initComponents(Doctor doctor){
         setTitle("Doctor");
         setSize(1200, 800);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.doctorActual = doctor;
 
         JPanel panelCitas = new JPanel(new BorderLayout());
         JScrollPane scrollPaneCitas= new JScrollPane();
         tabbedPane = new JTabbedPane();
+
+        JButton btnEditarPerfil = new JButton("Editar Perfil");
+        btnEditarPerfil.setHorizontalAlignment(SwingConstants.RIGHT);
+        add(btnEditarPerfil, BorderLayout.NORTH);
+
+        btnEditarPerfil.addActionListener(e -> {
+            VistaEditarPerfilDoctor vistaEditarPerfilDoctor = new VistaEditarPerfilDoctor(doctorActual);
+            vistaEditarPerfilDoctor.setVisible(true);
+            vistaEditarPerfilDoctor.setLocationRelativeTo(this);
+        });
 
         JLabel lblEncabezadoNombre = new JLabel("Nombre Paciente");
         lblEncabezadoNombre.setBounds(15,15,100,25);
@@ -79,7 +91,7 @@ public class VistaDoctor extends JFrame {
             if (txtHoraCita.getText().isBlank()){
                 JOptionPane.showMessageDialog(this,"Ingrese una hora","ERROR",JOptionPane.ERROR_MESSAGE);
             }else {
-                tableModelCitas.agregarCita(no, txtHoraCita.getText());
+                tableModelCitas.agregarCita(no, txtHoraCita.getText(),doctorActual.getEspecialidad());
             }
         });
 

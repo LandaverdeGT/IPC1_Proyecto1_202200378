@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class VistaListaDoctoresFiltrados extends JFrame {
-    VistaListaDoctoresFiltrados(List<Doctor> listaDoctores){
-        initComponents(listaDoctores);
+    VistaListaDoctoresFiltrados(String especialidadSeleccionada,List<Doctor> listaDoctores){
+        initComponents(especialidadSeleccionada,listaDoctores);
     }
 
-    public void initComponents(List<Doctor> listaDoctores){
+    public void initComponents(String especialidadSeleccionada,List<Doctor> listaDoctores){
         setTitle("Listado De Doctores");
         setSize(800, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -34,8 +34,10 @@ public class VistaListaDoctoresFiltrados extends JFrame {
         modeloTablaDoctores.addColumn("Edad");
 
         for (Doctor doctor : listaDoctores){
-            modeloTablaDoctores.addRow(new Object[]{doctor.getCodigo(), doctor.getNombres(), doctor.getApellidos(), doctor.getEspecialidad(),
-                    doctor.getGenero(), doctor.getTelefono(), doctor.getEdad()});
+            if (especialidadSeleccionada.equals(doctor.getEspecialidad())){
+                modeloTablaDoctores.addRow(new Object[]{doctor.getCodigo(), doctor.getNombres(), doctor.getApellidos(), doctor.getEspecialidad(),
+                        doctor.getGenero(), doctor.getTelefono(), doctor.getEdad()});
+            }
         }
         tablaDoctoresFiltrados.setModel(modeloTablaDoctores);
         JScrollPane scrollPaneDoctoresFiltrados = new JScrollPane(tablaDoctoresFiltrados);
