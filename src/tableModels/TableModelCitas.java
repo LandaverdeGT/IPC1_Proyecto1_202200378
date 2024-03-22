@@ -8,8 +8,8 @@ import javax.swing.table.AbstractTableModel;
 public class TableModelCitas extends AbstractTableModel {
 
     private String[] columnNames = {"NO.", "Hora de Cita"};
-    public void agregarCita(String numeroCita, String hora, String especialidad){
-        Doctor.agregarCita(new Cita(numeroCita,hora, especialidad));
+    public void agregarCita(String numeroCita, String hora, String especialidad) {
+        Doctor.agregarCita(new Cita(numeroCita, hora, especialidad));
         fireTableDataChanged();
     }
 

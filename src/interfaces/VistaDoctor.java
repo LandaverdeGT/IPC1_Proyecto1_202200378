@@ -2,16 +2,24 @@ package interfaces;
 
 import clases.Cita;
 import clases.Doctor;
+import clases.Historial;
+import clases.PanelPaciente;
 import tableModels.TableModelCitas;
-
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Objects;
 
+import static clases.Administrador.doctores;
+import static clases.Paciente.historiales;
+
 public class VistaDoctor extends JFrame {
     private JTabbedPane tabbedPane;
     private Doctor doctorActual;
+    private JPanel panelCitas;
+    private JPanel panelGraficas;
     int contador = 0;
     VistaDoctor(Doctor doctor){
         initComponents(doctor);
@@ -24,7 +32,7 @@ public class VistaDoctor extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.doctorActual = doctor;
 
-        JPanel panelCitas = new JPanel(new BorderLayout());
+        panelCitas = new JPanel(new BorderLayout());
         JScrollPane scrollPaneCitas= new JScrollPane();
         tabbedPane = new JTabbedPane();
 
@@ -53,6 +61,15 @@ public class VistaDoctor extends JFrame {
         JLabel lblAcciones = new JLabel("Acciones");
         lblAcciones.setBounds(900,15,100,25);
         panelCitas.add(lblAcciones);
+        panelCitas.setLayout(new BoxLayout(panelCitas, BoxLayout.Y_AXIS));
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (tabbedPane.getSelectedIndex() == tabbedPane.indexOfTab("Citas")){
+                    updatePacientesPanel();
+                }
+            }
+        });
 
         panelCitas.add(scrollPaneCitas, BorderLayout.CENTER);
 
@@ -101,6 +118,15 @@ public class VistaDoctor extends JFrame {
 
         tabbedPane.addTab("Asignar Horario",panelAsignarHorario);
         getContentPane().add(tabbedPane);
-
+    }
+    private void updatePacientesPanel(){
+        panelCitas.removeAll();
+        for (Historial historial : historiales){
+            PanelPaciente panelPaciente = new PanelPaciente(historial);
+            panelCitas.add(panelPaciente);
+            panelPaciente.add(Box.createVerticalStrut(10));
+        }
+        panelCitas.revalidate();
+        panelCitas.repaint();
     }
 }

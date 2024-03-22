@@ -4,14 +4,23 @@ import clases.Administrador;
 import clases.Doctor;
 import clases.Paciente;
 import clases.Producto;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 import tableModels.TableModelPacientes;
 import tableModels.TableModelProductos;
 import tableModels.TableModelsDoctores;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+
+import static clases.Administrador.doctores;
 
 
 public class VistaAdministrador extends JFrame {
@@ -22,8 +31,6 @@ public class VistaAdministrador extends JFrame {
     public VistaAdministrador(List<Doctor> doctores,List<Paciente> pacientes,List<Producto> productos){
         initComponents(doctores,pacientes,productos);
     }
-
-
     public void initComponents(List<Doctor> doctores, List<Paciente> pacientes, List<Producto> productos){
         setTitle("Administrador");
         setSize(1200, 800);
@@ -80,8 +87,11 @@ public class VistaAdministrador extends JFrame {
 
         tabbedPane.addTab("Doctores", panelDoctores);
         getContentPane().add(tabbedPane);
+        JPanel panelGrafica = new JPanel(new BorderLayout());
+        panelDoctores.add(panelGrafica, BorderLayout.SOUTH);
+        mostrarGraficaTopEspecialidades(panelGrafica, doctores);
 
-
+///////////////////////////////////////////////////////////////////////////////
         JPanel panelPacientes = new JPanel(new BorderLayout());
         JTable tablaPacientes = new JTable();
 
@@ -172,5 +182,30 @@ public class VistaAdministrador extends JFrame {
 
         tabbedPane.addTab("Productos", panelProductos);
         getContentPane().add(tabbedPane);
+    }
+    private void mostrarGraficaTopEspecialidades(JPanel panelGrafica, List<Doctor> doctores){
+        Map<String, Integer> especialidadesCount = new HashMap<>();
+        for (Doctor doctor : doctores) {
+            String especialidad = doctor.getEspecialidad();
+            especialidadesCount.put(especialidad, especialidadesCount.getOrDefault(especialidad, 0) + 1);
+        }
+        List<Map.Entry<String, Integer>> topEspecialidades = especialidadesCount.entrySet().stream()
+                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+                .limit(5)
+                .collect(Collectors.toList());
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (Map.Entry<String, Integer> entry : topEspecialidades) {
+            dataset.addValue(entry.getValue(), "Especialidad", entry.getKey());
+        }
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Top 5 de Especialidades de Doctores",
+                "Especialidades",
+                "Cantidad",
+                dataset
+        );
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        panelGrafica.add(chartPanel, BorderLayout.CENTER);
     }
 }

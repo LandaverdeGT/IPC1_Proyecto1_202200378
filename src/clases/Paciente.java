@@ -1,11 +1,15 @@
 package clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Paciente extends Usuario{
 
     private String nombres;
     private String apellidos;
     private String edad;
     private String sexo;
+    public static List<Historial> historiales;
 
     public Paciente(String codigo, String contrasena, String nombres, String apellidos, String edad, String sexo) {
         super(codigo, contrasena);
@@ -13,6 +17,11 @@ public class Paciente extends Usuario{
         this.apellidos = apellidos;
         this.edad = edad;
         this.sexo = sexo;
+        historiales = new ArrayList<>();
+    }
+
+    public static void agregarHistorial(Historial historial){
+        historiales.add(historial);
     }
 
     public String getNombres() {

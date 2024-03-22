@@ -2,8 +2,11 @@ package interfaces;
 
 import clases.*;
 import tableModels.TableModelCitas;
+import tableModels.TableModelHistorial;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,19 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static clases.Administrador.productos;
 import static clases.Doctor.citas;
 
 public class VistaPaciente extends JFrame {
     private JTabbedPane tabbedPane;
     private JPanel panelFarmacia;
-    public VistaPaciente(List<String> especialidades, List<Doctor> doctores, Paciente paciente){
-        initComponents(especialidades,doctores, paciente);
+    int contadorVeces = 0;
+    boolean limite = false;
+    TableModelHistorial tableModelHistorial = new TableModelHistorial();
+    public VistaPaciente(List<String> especialidades, List<Doctor> doctores, Paciente paciente, List<Producto> productos){
+        initComponents(especialidades,doctores, paciente, productos);
     }
-    public void initComponents(List<String> especialidades, List<Doctor> doctores, Paciente paciente) {
+    public void initComponents(List<String> especialidades, List<Doctor> doctores, Paciente paciente, List<Producto> productos) {
         setTitle("Paciente");
         setSize(1200, 800);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        final int[] cont = {0};
 
         JPanel panelSolicitarCita = new JPanel(new BorderLayout());
         JScrollPane scrollPaneSolicitar = new JScrollPane();
@@ -138,6 +146,18 @@ public class VistaPaciente extends JFrame {
         btnGenerarCita.setBounds(1000, 600, 150, 50);
         panelSolicitarCita.add(btnGenerarCita);
 
+        btnGenerarCita.addActionListener(e -> {
+            contadorVeces = contadorVeces+1;
+            if (!limite){
+                tableModelHistorial.agregarHistorial(contadorVeces,"Pendiente", cbxFechas.getSelectedItem().toString(), cbxHora.getSelectedItem().toString(), paciente);
+                JOptionPane.showMessageDialog(this,"Cita Creada con Éxito");
+                limite = true;
+            }else{
+                JOptionPane.showMessageDialog(this,"Ya ha creado una cita, no puede crear más", "EROR", JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
+
         panelSolicitarCita.add(scrollPaneSolicitar, BorderLayout.CENTER);
 
         tabbedPane.addTab("Solicitar Cita", panelSolicitarCita);
@@ -151,52 +171,55 @@ public class VistaPaciente extends JFrame {
         JPanel panelEstadoCita = new JPanel(new BorderLayout());
         JScrollPane scrollPaneEstadoCita = new JScrollPane();
 
-        JLabel lblHistorial = new JLabel("Historial de Citas:");
-        lblHistorial.setFont(new Font("Tahoma", Font.BOLD, 25));
-        lblHistorial.setBounds(50, 30, 300, 50);
-        panelEstadoCita.add(lblHistorial);
+        JLabel lblHistorial = new JLabel("Historial de Citas");
+        lblHistorial.setHorizontalAlignment(SwingConstants.CENTER);
+        panelEstadoCita.add(lblHistorial, BorderLayout.NORTH);
 
-        panelEstadoCita.add(scrollPaneEstadoCita, BorderLayout.CENTER);
+        JTable tablaHistorial = new JTable();
+        tablaHistorial.setModel(tableModelHistorial);
+        JScrollPane scrollPanelTablaHistorial = new JScrollPane(tablaHistorial);
+        panelEstadoCita.add(scrollPanelTablaHistorial, BorderLayout.CENTER);
 
         tabbedPane.addTab("Ver Estado Cita", panelEstadoCita);
         getContentPane().add(tabbedPane);
 
-        JLabel fondo2 = new JLabel();
-        fondo2.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/recursos/fondo1.jpg"))));
-        fondo2.setBounds(0, 0, 2000, 1000);
-        panelEstadoCita.add(fondo2);
-
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        panelFarmacia = new JPanel(new BorderLayout());
+        panelFarmacia = new JPanel();
+        panelFarmacia.setLayout(new BoxLayout(panelFarmacia, BoxLayout.Y_AXIS));
+
         JScrollPane scrollPaneFarmacia = new JScrollPane();
 
-        JLabel lblProductos = new JLabel("Productos Disponibles");
-        lblProductos.setFont(new Font("Tahoma", Font.BOLD, 15));
-        lblProductos.setBounds(25, 25, 800, 50);
-        panelFarmacia.add(lblProductos);
-
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (tabbedPane.getSelectedIndex() == tabbedPane.indexOfTab("Farmacia")){
+                    updateProductosPanel();
+                }
+            }
+        });
         panelFarmacia.add(scrollPaneFarmacia, BorderLayout.CENTER);
 
         tabbedPane.addTab("Farmacia", panelFarmacia);
         getContentPane().add(tabbedPane);
 
-
+        JLabel fondo3 = new JLabel();
+        fondo3.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/recursos/fondo1.jpg"))));
+        fondo3.setBounds(0, 0, 2000, 1000);
+        panelFarmacia.add(fondo3);
     }
+    private void updateProductosPanel() {
+        panelFarmacia.removeAll();
+        JLabel lblProductos = new JLabel("¡Nuestros Productos Disponibles, Visítanos para comprarlos!");
+        lblProductos.setFont(new Font("Tahoma", Font.BOLD, 25));
+        panelFarmacia.add(lblProductos);
+        panelFarmacia.add(Box.createVerticalStrut(10)); // Espacio entre el título y los productos
 
-    public void actualizarFarmacia(Producto producto){
-        JPanel panelProducto = new JPanel();
-        panelProducto.setLayout(new BoxLayout(panelProducto, BoxLayout.Y_AXIS));
-        panelProducto.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panelProducto.setPreferredSize(new Dimension(300,100));
+        for (Producto producto : productos) {
+            PanelProducto panelProducto = new PanelProducto(producto);
+            panelFarmacia.add(panelProducto);
+            panelFarmacia.add(Box.createVerticalStrut(10)); // Espacio entre productos
+        }
 
-        JLabel lblNombre = new JLabel("Nombre:" + producto.getNombre());
-        JLabel lblDescripcion = new JLabel("Descripción:" + producto.getDescripcion());
-        JLabel lblPrecio = new JLabel("Precio: Q." + producto.getPrecio());
-
-        panelProducto.add(lblNombre);
-        panelProducto.add(lblDescripcion);
-        panelProducto.add(lblPrecio);
-        panelFarmacia.add(panelProducto);
         panelFarmacia.revalidate();
         panelFarmacia.repaint();
     }

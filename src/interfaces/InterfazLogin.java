@@ -90,7 +90,7 @@ public class InterfazLogin extends JFrame {
                 SwingUtilities.invokeLater(()->{
                     for (Paciente paciente : pacientes){
                         if (codigo.equals(paciente.getCodigo()) && contrasena.equals(paciente.getContrasena())){
-                            VistaPaciente vistaPaciente = new VistaPaciente(especialidades,doctores,paciente);
+                            VistaPaciente vistaPaciente = new VistaPaciente(especialidades,doctores,paciente,productos);
                             vistaPaciente.setVisible(true);
                             vistaPaciente.setLocationRelativeTo(this);
                         }
